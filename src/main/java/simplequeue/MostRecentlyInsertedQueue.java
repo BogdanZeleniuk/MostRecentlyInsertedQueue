@@ -46,10 +46,9 @@ public class MostRecentlyInsertedQueue<E> extends AbstractQueue<E> implements Qu
 
     public MostRecentlyInsertedQueue(int capacity) {
         this.capacity = capacity;
-    }
-
-    public Iterator<E> iterator() {
-        return null;
+        countOfNodes = 0;
+        head = null;
+        tail = null;
     }
 
     public boolean offer(E element) {
@@ -116,6 +115,35 @@ public class MostRecentlyInsertedQueue<E> extends AbstractQueue<E> implements Qu
             currentNode.next = tail;
         }
     }
+
+    public Iterator<E> iterator() {
+        return new MostRecentlyInsertedQueueIterator<E>();
+    }
+    private class MostRecentlyInsertedQueueIterator<E> implements Iterator<E>{
+
+        private Node<E> currentNode;
+
+        public MostRecentlyInsertedQueueIterator() {
+            currentNode = head.getNext();
+        }
+
+        public void remove() {
+            Node<E> node = tail;
+            if (node == null) throw new IllegalStateException();
+            node.setElement(null);
+        }
+
+        public boolean hasNext() {
+            return (currentNode != null);
+        }
+
+        public E next() {
+            if(!hasNext()) throw new NoSuchElementException("There is no more elements.");
+            E newElement = currentNode.element;
+            currentNode = currentNode.getNext();
+            return newElement;
+        }
+    };
 
     @Override
     public String toString() {

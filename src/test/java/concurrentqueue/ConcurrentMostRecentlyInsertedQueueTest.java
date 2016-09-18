@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import simplequeue.MostRecentlyInsertedQueue;
 
 import java.util.concurrent.TimeUnit;
 
@@ -97,5 +98,26 @@ public class ConcurrentMostRecentlyInsertedQueueTest {
     public void offerOfEmptyElement(){
         thrown.expect(NullPointerException.class);
         TEST_CONCURRENT_MOST_RECENTLY_INSERTED_QUEUE.offer(null);
+    }
+
+    @Test
+    public void iteratorHasNextTest(){
+        int count = 0;
+        for (int i=0; i<TEST_CONCURRENT_MOST_RECENTLY_INSERTED_QUEUE.size(); i++){
+            if (TEST_CONCURRENT_MOST_RECENTLY_INSERTED_QUEUE.iterator().hasNext()){
+                count++;
+            }
+        }
+        Assert.assertEquals(count,5);
+    }
+
+    @Test
+    public void iteratorNextTest(){
+        MostRecentlyInsertedQueue<Integer> queue = new MostRecentlyInsertedQueue<Integer>(CAPACITY);
+        for (int i=0; i<TEST_CONCURRENT_MOST_RECENTLY_INSERTED_QUEUE.size(); i++){
+            int addElement = TEST_CONCURRENT_MOST_RECENTLY_INSERTED_QUEUE.iterator().next();
+            queue.offer(addElement);
+        }
+        Assert.assertEquals("[1, 1, 1, 1, 1]", queue.toString());
     }
 }

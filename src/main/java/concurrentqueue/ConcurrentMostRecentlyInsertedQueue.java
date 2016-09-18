@@ -3,6 +3,7 @@ package concurrentqueue;
 import java.io.Serializable;
 import java.util.AbstractQueue;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -77,10 +78,6 @@ public class ConcurrentMostRecentlyInsertedQueue<E> extends AbstractQueue<E> imp
 
     public boolean casTail(Node<E> expect, Node<E> update){
         return tailUpdater.compareAndSet(this, expect, update);
-    }
-
-    public Iterator<E> iterator() {
-        return null;
     }
 
     public int size() {
@@ -172,6 +169,76 @@ public class ConcurrentMostRecentlyInsertedQueue<E> extends AbstractQueue<E> imp
     public void clear() {
         while (!isEmpty()){
             poll();
+        }
+    }
+
+    public Iterator<E> iterator() {
+        return new ConcurrentMostRecentlyInsertedIterator();}
+
+    private class ConcurrentMostRecentlyInsertedIterator implements Iterator<E> {
+
+        private Node<E> currentNode;
+        private E nextItem;
+        private Node<E> lastNode;
+
+        ConcurrentMostRecentlyInsertedIterator() {
+            advance();
+        }
+        private E advance() {
+            lastNode = currentNode;
+            E x = nextItem;
+
+            Node<E> newNode = (currentNode == null)? firstNode() : currentNode.getNext();
+            for (;;) {
+                if (newNode == null) {
+                    currentNode = null;
+                    nextItem = null;
+                    return x;
+                }
+                E item = newNode.getElement();
+                if (item != null) {
+                    currentNode = newNode;
+                    nextItem = item;
+                    return x;
+                } else
+                    newNode = newNode.getNext();
+            }
+        }
+
+        public boolean hasNext() {
+            return currentNode != null;
+        }
+
+        public E next() {
+            if (currentNode == null) throw new NoSuchElementException();
+            return advance();
+        }
+
+        public void remove() {
+            Node<E> l = lastNode;
+            if (l == null) throw new IllegalStateException();
+            l.setElement(null);
+            lastNode = null;
+        }
+    }
+
+    Node<E> firstNode() {
+        for (;;) {
+            Node<E> h = head;
+            Node<E> t = tail;
+            Node<E> first = h.getNext();
+            if (h == head) {
+                if (h == t) {
+                    if (first == null)
+                        return null;
+                    else
+                        casTail(t, first);
+                } else {
+                    if (first.getElement() != null)
+                        return first;
+                    else casHead(h, first);
+                }
+            }
         }
     }
 

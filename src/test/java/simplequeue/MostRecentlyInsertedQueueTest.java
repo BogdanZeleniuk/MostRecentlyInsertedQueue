@@ -28,7 +28,7 @@ public class MostRecentlyInsertedQueueTest {
     private MostRecentlyInsertedQueue<Integer> TEST_MOST_RECENTLY_INSERTED_QUEUE = new MostRecentlyInsertedQueue<Integer>(CAPACITY);
     private static final int ELEMENT_ONE = 1;
     private static final int ELEMENT_TWO = 2;
-    private static final int ELEMENT_TRE = 3;
+    private static final int ELEMENT_THREE = 3;
     private static final int ELEMENT_FOUR = 4;
     private static final int ELEMENT_FIVE = 5;
     private static final int ELEMENT_SIX = 6;
@@ -38,14 +38,14 @@ public class MostRecentlyInsertedQueueTest {
         {
             TEST_LINKED_QUEUE.offer(ELEMENT_ONE);
             TEST_LINKED_QUEUE.offer(ELEMENT_TWO);
-            TEST_LINKED_QUEUE.offer(ELEMENT_TRE);
+            TEST_LINKED_QUEUE.offer(ELEMENT_THREE);
             TEST_LINKED_QUEUE.offer(ELEMENT_FOUR);
             TEST_LINKED_QUEUE.offer(ELEMENT_FIVE);
         }
         {
             TEST_MOST_RECENTLY_INSERTED_QUEUE.offer(ELEMENT_ONE);
             TEST_MOST_RECENTLY_INSERTED_QUEUE.offer(ELEMENT_TWO);
-            TEST_MOST_RECENTLY_INSERTED_QUEUE.offer(ELEMENT_TRE);
+            TEST_MOST_RECENTLY_INSERTED_QUEUE.offer(ELEMENT_THREE);
             TEST_MOST_RECENTLY_INSERTED_QUEUE.offer(ELEMENT_FOUR);
             TEST_MOST_RECENTLY_INSERTED_QUEUE.offer(ELEMENT_FIVE);
         }
@@ -120,5 +120,26 @@ public class MostRecentlyInsertedQueueTest {
         thrown.expect(NoSuchElementException.class);
         TEST_MOST_RECENTLY_INSERTED_QUEUE.clear();
         TEST_MOST_RECENTLY_INSERTED_QUEUE.poll();
+    }
+
+    @Test
+    public void iteratorHasNextTest(){
+        int count = 0;
+        for (int i=0; i<TEST_MOST_RECENTLY_INSERTED_QUEUE.size(); i++){
+            if (TEST_MOST_RECENTLY_INSERTED_QUEUE.iterator().hasNext()){
+                count++;
+            }
+        }
+        Assert.assertEquals(count,5);
+    }
+
+    @Test
+    public void iteratorNextTest(){
+        MostRecentlyInsertedQueue<Integer> queue = new MostRecentlyInsertedQueue<Integer>(CAPACITY);
+        for (int i=0; i<TEST_MOST_RECENTLY_INSERTED_QUEUE.size(); i++){
+            int addElement = TEST_MOST_RECENTLY_INSERTED_QUEUE.iterator().next();
+            queue.offer(addElement);
+        }
+        Assert.assertEquals("[2, 2, 2, 2, 2]", queue.toString());
     }
 }

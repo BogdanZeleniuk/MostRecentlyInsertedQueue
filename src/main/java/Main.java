@@ -1,5 +1,7 @@
+import blockingqueue.MostRecentlyInsertedBlockingQueue;
 import concurrentqueue.ConcurrentMostRecentlyInsertedQueue;
 import simplequeue.MostRecentlyInsertedQueue;
+
 
 /**
  * Created by Admin on 15.09.2016.
@@ -45,5 +47,20 @@ public class Main {
         System.out.println(concurrentQueue.toString() + " ----------> count = "+ fourthPeekCount);
         concurrentQueue.clear();
         System.out.println(concurrentQueue.toString());
+
+        System.out.println("--------------------------------------------------------------------");
+
+        MostRecentlyInsertedBlockingQueue<Integer> blockingQueue = new MostRecentlyInsertedBlockingQueue<Integer>(3);
+        System.out.println(blockingQueue.toString());
+        blockingQueue.offer(1);
+        System.out.println(blockingQueue.toString());
+        blockingQueue.offer(2);
+        System.out.println(blockingQueue.toString());
+        blockingQueue.offer(3);
+        System.out.println(blockingQueue.toString());
+        blockingQueue.offer(4);
+        System.out.println(blockingQueue.toString());
+        blockingQueue.offer(5);
+        System.out.println(blockingQueue.toString());
     }
 }
