@@ -15,7 +15,7 @@ public class MostRecentlyInsertedQueue<E> extends AbstractQueue<E> implements Qu
     private Node head;
     private Node tail;
 
-    private class Node<E>{
+    private static class Node<E>{
         private E element;
         private Node next;
 
@@ -124,7 +124,7 @@ public class MostRecentlyInsertedQueue<E> extends AbstractQueue<E> implements Qu
         private Node<E> currentNode;
 
         public MostRecentlyInsertedQueueIterator() {
-            currentNode = head.getNext();
+            currentNode = head;
         }
 
         public void remove() {
@@ -139,11 +139,12 @@ public class MostRecentlyInsertedQueue<E> extends AbstractQueue<E> implements Qu
 
         public E next() {
             if(!hasNext()) throw new NoSuchElementException("There is no more elements.");
-            E newElement = currentNode.element;
             currentNode = currentNode.getNext();
+            E newElement = (E) currentNode.element;
+
             return newElement;
         }
-    };
+    }
 
     @Override
     public String toString() {

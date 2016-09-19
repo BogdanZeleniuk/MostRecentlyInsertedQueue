@@ -2,10 +2,9 @@ import blockingqueue.MostRecentlyInsertedBlockingQueue;
 import concurrentqueue.ConcurrentMostRecentlyInsertedQueue;
 import simplequeue.MostRecentlyInsertedQueue;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 
-/**
- * Created by Admin on 15.09.2016.
- */
+
 public class Main {
     public static void main(String[] args) {
         MostRecentlyInsertedQueue<Integer> queue = new MostRecentlyInsertedQueue<Integer>(3);
@@ -61,6 +60,36 @@ public class Main {
         blockingQueue.offer(4);
         System.out.println(blockingQueue.toString());
         blockingQueue.offer(5);
+        System.out.println(blockingQueue.toString());
+        try {
+            blockingQueue.offer(6,3,SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(blockingQueue.toString());
+        try {
+            int firstElementForRemoving = blockingQueue.poll(5,SECONDS);
+            System.out.println("The element removing with timeout is " + firstElementForRemoving);
+            System.out.println(blockingQueue.toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        blockingQueue.offer(7);
+        System.out.println(blockingQueue.toString());
+        blockingQueue.offer(8);
+        System.out.println(blockingQueue.toString());
+        try {
+            int elementForTaking = blockingQueue.take();
+            System.out.println("The element taking and removing at the same time is " + elementForTaking);
+            System.out.println(blockingQueue.toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        int fifthPeekCount = blockingQueue.peek();
+        System.out.println(blockingQueue.toString() + " ----------> count = "+ fifthPeekCount );
+        int sixthPeekCount = blockingQueue.peek();
+        System.out.println(blockingQueue.toString() + " ----------> count = "+ sixthPeekCount);
+        blockingQueue.clear();
         System.out.println(blockingQueue.toString());
     }
 }

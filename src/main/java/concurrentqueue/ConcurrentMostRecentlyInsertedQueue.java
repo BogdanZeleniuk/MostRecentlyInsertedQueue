@@ -8,9 +8,6 @@ import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
-/**
- * Created by Admin on 15.09.2016.
- */
 public class ConcurrentMostRecentlyInsertedQueue<E> extends AbstractQueue<E> implements Queue<E>, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -20,7 +17,7 @@ public class ConcurrentMostRecentlyInsertedQueue<E> extends AbstractQueue<E> imp
     private volatile Node head = new Node<E>(null,null);
     private volatile Node tail = head;
 
-    private class Node<E>{
+    private static class Node<E>{
         private volatile E element;
         private volatile Node next;
 
@@ -178,8 +175,8 @@ public class ConcurrentMostRecentlyInsertedQueue<E> extends AbstractQueue<E> imp
     private class ConcurrentMostRecentlyInsertedIterator implements Iterator<E> {
 
         private Node<E> currentNode;
-        private E nextItem;
         private Node<E> lastNode;
+        private E nextItem;
 
         ConcurrentMostRecentlyInsertedIterator() {
             advance();
