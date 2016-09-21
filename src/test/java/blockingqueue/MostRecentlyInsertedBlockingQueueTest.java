@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.anarsoft.vmlens.concurrent.junit.ConcurrentTestRunner;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.Is.is;
 
 
 @RunWith(ConcurrentTestRunner.class)
@@ -52,9 +52,17 @@ public class MostRecentlyInsertedBlockingQueueTest {
     }
 
     @Test
-    public void pollTest() throws Exception{
+    public void pollWithTimeUtilTest() throws Exception{
         Thread.sleep(3000);
         TEST_MOST_RECENTLY_INSERTED_BLOCKING_QUEUE.poll(3,TimeUnit.SECONDS);
+    }
+
+    @Test
+    public void pollTest() throws Exception{
+        while (!TEST_MOST_RECENTLY_INSERTED_BLOCKING_QUEUE.isEmpty()){
+            TEST_MOST_RECENTLY_INSERTED_BLOCKING_QUEUE.poll();
+        }
+        Assert.assertThat(TEST_MOST_RECENTLY_INSERTED_BLOCKING_QUEUE.size(),is(0));
     }
 
 }
