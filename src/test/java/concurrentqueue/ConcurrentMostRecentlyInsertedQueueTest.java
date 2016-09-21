@@ -16,9 +16,6 @@ import simplequeue.MostRecentlyInsertedQueue;
 
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by Admin on 15.09.2016.
- */
 @RunWith(JUnit4.class)
 public class ConcurrentMostRecentlyInsertedQueueTest {
 

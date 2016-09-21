@@ -15,9 +15,6 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by Admin on 15.09.2016.
- */
 @RunWith(JUnit4.class)
 public class MostRecentlyInsertedQueueTest {
 

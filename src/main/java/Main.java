@@ -62,13 +62,13 @@ public class Main {
         blockingQueue.offer(5);
         System.out.println(blockingQueue.toString());
         try {
-            blockingQueue.offer(6,3,SECONDS);
+            blockingQueue.offer(6,1,SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         System.out.println(blockingQueue.toString());
         try {
-            int firstElementForRemoving = blockingQueue.poll(5,SECONDS);
+            int firstElementForRemoving = blockingQueue.poll(2,SECONDS);
             System.out.println("The element removing with timeout is " + firstElementForRemoving);
             System.out.println(blockingQueue.toString());
         } catch (InterruptedException e) {

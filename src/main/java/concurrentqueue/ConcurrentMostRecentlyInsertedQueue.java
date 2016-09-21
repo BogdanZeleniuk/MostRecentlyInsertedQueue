@@ -14,8 +14,8 @@ public class ConcurrentMostRecentlyInsertedQueue<E> extends AbstractQueue<E> imp
 
     private AtomicInteger capacity;
     private AtomicInteger countOfNodes = new AtomicInteger(0);
-    private volatile Node head = new Node<E>(null,null);
-    private volatile Node tail = head;
+    private volatile Node<E> head = new Node<E>(null,null);
+    private volatile Node<E> tail = head;
 
     private static class Node<E>{
         private volatile E element;

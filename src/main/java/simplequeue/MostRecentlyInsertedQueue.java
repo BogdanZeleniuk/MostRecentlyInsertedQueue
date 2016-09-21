@@ -12,17 +12,17 @@ public class MostRecentlyInsertedQueue<E> extends AbstractQueue<E> implements Qu
 
     private int countOfNodes;
     private int capacity;
-    private Node head;
-    private Node tail;
+    private Node<E> head;
+    private Node<E> tail;
 
     private static class Node<E>{
         private E element;
-        private Node next;
+        private Node<E> next;
 
         public Node() {
         }
 
-        public Node(E element, Node next) {
+        public Node(E element, Node<E> next) {
             this.element = element;
             this.next = next;
         }
@@ -74,7 +74,7 @@ public class MostRecentlyInsertedQueue<E> extends AbstractQueue<E> implements Qu
             tail = null;
             throw new NoSuchElementException("The queue is empty!");
         }
-        E elementForRemoving = (E) head.element;
+        E elementForRemoving = head.element;
         head = head.next;
         countOfNodes--;
         return elementForRemoving;
@@ -83,7 +83,7 @@ public class MostRecentlyInsertedQueue<E> extends AbstractQueue<E> implements Qu
     public E peek() {
         if (isEmpty())
             throw new NoSuchElementException("The queue is empty!");
-        E   elementForGetting = (E) head.element;
+        E   elementForGetting = head.element;
         head = head.next;
         countOfNodes--;
         return elementForGetting;
@@ -106,7 +106,7 @@ public class MostRecentlyInsertedQueue<E> extends AbstractQueue<E> implements Qu
 
     private void addNodeToTail(E element){
         Node currentNode = tail;
-        tail = new Node();
+        tail = new Node<E>();
         tail.element = element;
         if (isEmpty()) {
             head = tail;
@@ -119,16 +119,17 @@ public class MostRecentlyInsertedQueue<E> extends AbstractQueue<E> implements Qu
     public Iterator<E> iterator() {
         return new MostRecentlyInsertedQueueIterator<E>();
     }
+
     private class MostRecentlyInsertedQueueIterator<E> implements Iterator<E>{
 
         private Node<E> currentNode;
 
         public MostRecentlyInsertedQueueIterator() {
-            currentNode = head;
+            currentNode = (Node<E>) MostRecentlyInsertedQueue.this.head;
         }
 
         public void remove() {
-            Node<E> node = tail;
+            Node<E> node = (Node<E>) MostRecentlyInsertedQueue.this.tail;
             if (node == null) throw new IllegalStateException();
             node.setElement(null);
         }
@@ -140,8 +141,7 @@ public class MostRecentlyInsertedQueue<E> extends AbstractQueue<E> implements Qu
         public E next() {
             if(!hasNext()) throw new NoSuchElementException("There is no more elements.");
             currentNode = currentNode.getNext();
-            E newElement = (E) currentNode.element;
-
+            E newElement = currentNode.element;
             return newElement;
         }
     }

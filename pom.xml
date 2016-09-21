@@ -22,6 +22,11 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.vmlens</groupId>
+            <artifactId>concurrent-junit</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
         <!--================= SLF4J and LogBack Logging =================-->
         <dependency>
